@@ -32,6 +32,13 @@ demo after it and the menu (Escape through the key pipe), and with
   (`-frames <path>`, `-every <n>`, `-quit <n>`), keys come from a pipe
   (`-keys <path>`, two bytes per event: pressed, doomkeys.h code). Any other
   backend links in its place (`tools/build.mjs --backend …`).
+- `src/w_file_navx.c`: WAD I/O, built instead of doomgeneric's
+  `w_file_stdc.c`. It's the same, plus `-mmap`: the whole WAD is read
+  into memory in one go and its lumps are used in place. From a CD or DVD
+  drive that's one sequential read instead of a seek for every lump, so
+  seconds instead of minutes at start-up. It needs the WAD's size in free
+  memory; without that it says so and reads from the file. (doomgeneric's
+  own `-mmap` needs `HAVE_MMAP`, which its `config.h` turns off.)
 
 The SDK features it uses: `--large-data` (about 420 KB of globals, through
 a GOT), `--pad-hilo` (Doom multiplies and divides; MIPS I's hi/lo hazard),

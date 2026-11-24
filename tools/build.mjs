@@ -20,13 +20,13 @@ export function doomSources() {
   const mk = readFileSync(join(root, 'doomgeneric/Makefile'), 'utf8').match(/^SRC_DOOM = (.*)$/m)[1];
   return mk
     .split(/\s+/)
-    .filter((f) => f && !/^doomgeneric_/.test(f))
+    .filter((f) => f && !/^doomgeneric_/.test(f) && f !== 'w_file_stdc.o') // src/w_file_navx.c instead
     .map((f) => join(root, 'doomgeneric', f.replace(/\.o$/, '.c')));
 }
 
 const out = values.out ?? join(root, 'dist/doom');
 const backend = resolve(values.backend ?? join(root, 'src/platform_emu.c'));
-const r = build([...doomSources(), join(root, 'src/doomgeneric_navx.c'), backend], {
+const r = build([...doomSources(), join(root, 'src/doomgeneric_navx.c'), join(root, 'src/w_file_navx.c'), backend], {
   name: 'doom',
   largeData: true, // ~420 KB of globals
   padHiLo: true, // Doom multiplies and divides
