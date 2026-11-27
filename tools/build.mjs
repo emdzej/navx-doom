@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 // Build Doom as an OS-9000 program module with the navx SDK.
 //
-//   NAVX_DIR=../navx node tools/build.mjs [-o dist/doom] [--backend src/platform_emu.c]
+//   NAVX_SDK=../navx-sdk node tools/build.mjs [-o dist/doom] [--backend src/platform_emu.c]
 //
-// NAVX_DIR is a built navx checkout (pnpm build); default ../navx.
+// NAVX_SDK is a built navx-sdk checkout (pnpm build); default ../navx-sdk.
+// The SDK is not public yet: building needs access to it.
 // --backend picks the platform (navx_platform.h); default the emulator's.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -11,9 +12,9 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const navx = resolve(process.env.NAVX_DIR ?? join(root, '../navx'));
+const sdk = resolve(process.env.NAVX_SDK ?? join(root, '../navx-sdk'));
 const { values } = parseArgs({ options: { out: { type: 'string', short: 'o' }, backend: { type: 'string' } } });
-const { build } = await import(pathToFileURL(join(navx, 'packages/sdk/dist/index.js')).href);
+const { build } = await import(pathToFileURL(join(sdk, 'dist/index.js')).href);
 
 /** doomgeneric's portable sources: its Makefile's list without the platform files. */
 export function doomSources() {

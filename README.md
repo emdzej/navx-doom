@@ -10,7 +10,8 @@ No WAD here: bring your own (the shareware `DOOM1.WAD` works).
 ## Build and run
 
 ```sh
-# a built navx checkout next to this one (or NAVX_DIR=…), with LLVM's clang (brew install llvm)
+# a built navx-sdk checkout next to this one (or NAVX_SDK=…; the SDK is not public yet),
+# and a built navx for the emulator run; LLVM's clang (brew install llvm)
 node tools/build.mjs                       # → dist/doom, an OS-9000 program module
 NAVX_DOOM_WAD=/path/DOOM1.WAD node test/run.mjs --shots shots
 ```
